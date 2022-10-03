@@ -1,0 +1,20 @@
+ */
+	public boolean isActionAllowedToUser(byte[] userUuidBin, PermissionAction action, Integer groupId) {
+		Map<Integer, Integer> atr1Restrictions = new HashMap<>();
+		Map<Integer, Integer> atr2Restrictions = new HashMap<>();
+		if (userUuidBin == null) {
+			return true;
+		}
+		fetchLevelRestrictions(groupId, userUuidBin, atr1Restrictions, atr2Restrictions);
+		for (Map.Entry<Integer, Integer> entry : atr1Restrictions.entrySet()) {
+			if (atr1Restrictions.containsKey(action.getId()) && entry.getKey().equals(action.getId())) {
+				return !entry.getValue().equals(1);
+			}
+		}
+		for (Map.Entry<Integer, Integer> entry : atr2Restrictions.entrySet()) {
+			if (atr2Restrictions.containsKey(action.getId()) && entry.getKey().equals(action.getId())) {
+				return !entry.getValue().equals(1);
+			}
+		}
+		return true;
+	}
